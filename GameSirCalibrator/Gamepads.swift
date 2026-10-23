@@ -20,6 +20,9 @@ final class Gamepad: Identifiable {
     var source = "HID axes"
     /// DS4-style pads put the right stick on Z/Rz, Switch-style pads on Rx/Ry.
     var rightUsesRxRy: Bool
+    @ObservationIgnored var lastFullReport = ContinuousClock.now
+
+    static let fullReports = "Switch Pro full reports (0x30)"
 
     var id: ObjectIdentifier { ObjectIdentifier(device) }
 
@@ -132,16 +135,26 @@ final class Gamepads {
 
     private func received(_ value: IOHIDValue) {
         let element = IOHIDValueGetElement(value)
-        guard Gamepad.isAxis(element), let pad = pad(for: IOHIDElementGetDevice(element)) else { return }
+        guard Gamepad.isAxis(element), let pad = pad(for: IOHIDElementGetDevice(element)),
+              pad.source != Gamepad.fullReports else { return }
         pad.axes[IOHIDElementGetUsage(element)] = Gamepad.normalized(value)
     }
 
     private func received(_ report: [UInt8], from device: IOHIDDevice) {
         guard let pad = pad(for: device), pad.isSwitchPro,
               let sticks = Gamepad.switchProSticks(report) else { return }
-        // Over USB these arrive ~1000 times a second; writing only changes keeps an idle pad from redrawing the window.
-        let source = "Switch Pro full reports (0x30)"
-        if pad.source != source { pad.source = source }
+        if pad.source != Gamepad.fullReports {
+            // Full reports carry only the two sticks. Other axes the descriptor declares
+            // (Z/Rz over USB) never update, so drop them and pin the right stick to Rx/Ry.
+            pad.source = Gamepad.fullReports
+            pad.axes = [:]
+            pad.rightUsesRxRy = true
+        }
+        // ponytail: the dongle sends ~1000 reports/s over USB; the screen and the 125 Hz sampler need ~120.
+        // Reports keep streaming while the pad is on, so a skipped value is replaced within milliseconds.
+        let now = ContinuousClock.now
+        guard now - pad.lastFullReport >= .milliseconds(8) else { return }
+        pad.lastFullReport = now
         let values: [UInt32: Double] = [0x30: sticks.left.x, 0x31: sticks.left.y, 0x33: sticks.right.x, 0x34: sticks.right.y]
         for (usage, value) in values where pad.axes[usage] != value { pad.axes[usage] = value }
     }
