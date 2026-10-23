@@ -4,6 +4,14 @@ A small macOS app that checks your GameSir controller's sticks for drift and rou
 
 Unofficial. Not affiliated with or endorsed by GameSir.
 
+![GameSir Calibrator showing a Cyclone 2's stick measurement](docs/screenshot.jpg)
+
+## Download
+
+Get `GameSirCalibrator-0.1.0.zip` from [Releases](https://github.com/AdhamSamer3301/GameSirCalibrator/releases), unzip it and move the app to Applications. It runs on macOS 14 or later, on Apple Silicon and Intel Macs.
+
+The app isn't notarized by Apple, so the first time you open it macOS says it can't verify the developer. Open System Settings › Privacy & Security and click **Open Anyway**.
+
 ## What it does
 
 1. **Measure:** it records where each stick rests (centre offset and noise), then how far and how evenly it travels while you rotate it (reach and roundness). It also suggests a deadzone.
@@ -25,13 +33,19 @@ In Switch mode the triggers are on/off buttons, so the app can't measure how far
 
 ## Build
 
-Requires macOS 14 or later and Xcode 16 or later.
+Building requires Xcode 26 or later (CI uses Xcode 26.6). The app itself runs on macOS 14 or later.
 
 ```bash
 xcodebuild -project GameSirCalibrator.xcodeproj -scheme GameSirCalibrator build
 ```
 
 Or open `GameSirCalibrator.xcodeproj` and press Run. Tests: `xcodebuild … test`.
+
+Release build (universal, for Apple Silicon and Intel):
+
+```bash
+xcodebuild -project GameSirCalibrator.xcodeproj -scheme GameSirCalibrator -configuration Release -destination 'generic/platform=macOS' build
+```
 
 ## Add your controller
 
