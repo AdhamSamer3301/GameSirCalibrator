@@ -139,10 +139,10 @@ final class Gamepads {
     private func received(_ report: [UInt8], from device: IOHIDDevice) {
         guard let pad = pad(for: device), pad.isSwitchPro,
               let sticks = Gamepad.switchProSticks(report) else { return }
-        pad.source = "Switch Pro full reports (0x30)"
-        pad.axes[0x30] = sticks.left.x
-        pad.axes[0x31] = sticks.left.y
-        pad.axes[0x33] = sticks.right.x
-        pad.axes[0x34] = sticks.right.y
+        // Over USB these arrive ~1000 times a second; writing only changes keeps an idle pad from redrawing the window.
+        let source = "Switch Pro full reports (0x30)"
+        if pad.source != source { pad.source = source }
+        let values: [UInt32: Double] = [0x30: sticks.left.x, 0x31: sticks.left.y, 0x33: sticks.right.x, 0x34: sticks.right.y]
+        for (usage, value) in values where pad.axes[usage] != value { pad.axes[usage] = value }
     }
 }
