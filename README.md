@@ -33,7 +33,7 @@ In Switch mode the triggers are on/off buttons, so the app can't measure how far
 
 ## Build
 
-Requires macOS 14 or later and Xcode 16 or later.
+Building requires Xcode 26 or later (CI uses Xcode 26.6). The app itself runs on macOS 14 or later.
 
 ```bash
 xcodebuild -project GameSirCalibrator.xcodeproj -scheme GameSirCalibrator build
