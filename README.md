@@ -24,7 +24,7 @@ The app only reads the controller. It never writes to it, and it doesn't change 
 
 | Controller | Mode | Connection | Calibration steps |
 |---|---|---|---|
-| GameSir Cyclone 2 | Switch (shows up as "Pro Controller") | 2.4 GHz dongle, Bluetooth | Built in |
+| GameSir Cyclone 2 | Switch (shows up as "Pro Controller") | 2.4 GHz dongle (Home + X), Bluetooth. Both tested | Built in |
 | Other HID gamepads | Any mode macOS sees as a gamepad | USB, dongle, Bluetooth | Generic ("see your manual") |
 
 **Xbox (XInput) mode doesn't work:** macOS can't see controllers in that mode. Switch your controller to Switch mode.
