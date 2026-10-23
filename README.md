@@ -8,7 +8,7 @@ Unofficial. Not affiliated with or endorsed by GameSir.
 
 ## Download
 
-Get `GameSirCalibrator-0.1.0.zip` from [Releases](https://github.com/AdhamSamer3301/GameSirCalibrator/releases), unzip it and move the app to Applications. It runs on macOS 14 or later, on Apple Silicon and Intel Macs.
+Get the latest `GameSirCalibrator-<version>.zip` from [Releases](https://github.com/AdhamSamer3301/GameSirCalibrator/releases/latest), unzip it and move the app to Applications. It runs on macOS 14 or later, on Apple Silicon and Intel Macs.
 
 The app isn't notarized by Apple, so the first time you open it macOS says it can't verify the developer. Open System Settings › Privacy & Security and click **Open Anyway**.
 
@@ -24,7 +24,7 @@ The app only reads the controller. It never writes to it, and it doesn't change 
 
 | Controller | Mode | Connection | Calibration steps |
 |---|---|---|---|
-| GameSir Cyclone 2 | Switch (shows up as "Pro Controller") | 2.4 GHz dongle, Bluetooth | Built in |
+| GameSir Cyclone 2 | Switch (shows up as "Pro Controller") | 2.4 GHz dongle (Home + X), Bluetooth. Both tested | Built in |
 | Other HID gamepads | Any mode macOS sees as a gamepad | USB, dongle, Bluetooth | Generic ("see your manual") |
 
 **Xbox (XInput) mode doesn't work:** macOS can't see controllers in that mode. Switch your controller to Switch mode.
