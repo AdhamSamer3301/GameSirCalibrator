@@ -1,80 +1,88 @@
 # GameSir Calibrator
 
-A small macOS app that checks your GameSir controller's sticks for drift and roundness, walks you through the controller's built-in calibration, and measures again so you can see the difference.
+Is your stick drifting, or is it just you? GameSir Calibrator is a small Mac app that shows you exactly how your controller's sticks behave, walks you through the controller's own calibration, and then measures again so you can see whether it helped.
 
-Unofficial. Not affiliated with or endorsed by GameSir.
+It's free and open source. It's also unofficial: it isn't made by GameSir and isn't affiliated with them.
 
 ![GameSir Calibrator showing a Cyclone 2's stick measurement](docs/screenshot.jpg)
 
-## Install
+## Getting started
 
-Requires macOS 14 or later, on an Apple Silicon or Intel Mac.
+You'll need a Mac with macOS 14 or later (Apple Silicon or Intel).
 
-1. Download the latest `GameSirCalibrator-<version>.zip` from [Releases](https://github.com/AdhamSamer3301/GameSirCalibrator/releases/latest).
-2. Double-click the zip to unzip it, then drag **GameSirCalibrator** into your **Applications** folder.
-3. Open it. The first time, macOS says it "could not verify GameSirCalibrator is free of malware". Click **Done**, not Move to Trash.
-4. Open **System Settings › Privacy & Security**, scroll down to **Security**, and click **Open Anyway** next to the GameSirCalibrator message. Confirm with your password or Touch ID, then click **Open Anyway** once more.
+1. Grab the latest `GameSirCalibrator-<version>.zip` from the [Releases page](https://github.com/AdhamSamer3301/GameSirCalibrator/releases/latest).
+2. Unzip it and drag **GameSirCalibrator** into your **Applications** folder.
+3. Open it.
 
-From then on it opens normally. Each new version you download asks once again.
+### That "Apple could not verify…" popup
 
-**Why the warning?** The app is free and open source, but it isn't notarized by Apple, which requires a paid Apple Developer account. To check your download, compare the zip's SHA-256 with the one in the release notes (`shasum -a 256 GameSirCalibrator-*.zip`), or [build it yourself](#build).
+The first time you open the app, macOS will stop you with a popup saying it "could not verify GameSirCalibrator is free of malware". Don't worry, you only have to get past it once:
 
-**Prefer Terminal?** Instead of steps 3 and 4, clear the download flag. Only do this for apps you trust:
+1. Click **Done** on the popup (not Move to Trash).
+2. Open **System Settings → Privacy & Security** and scroll down to the **Security** section.
+3. You'll see a note saying GameSirCalibrator was blocked. Click **Open Anyway**.
+4. Confirm with your password or Touch ID, then click **Open Anyway** one more time.
+
+That's it. From now on it opens like any other app. You'll see the popup once more each time you download a new version.
+
+Comfortable with Terminal? This one line does the same job:
 
 ```bash
 xattr -dr com.apple.quarantine /Applications/GameSirCalibrator.app
 ```
 
-## Connect your controller
+## Connecting your controller
 
-Put the controller in **Switch mode**; macOS then lists it as "Pro Controller".
+Your Mac can only see the controller in **Switch mode**. Once it's connected, it shows up as "Pro Controller".
 
-- **GameSir Cyclone 2, 2.4 GHz dongle:** plug the dongle into your Mac, then press **Home + X**.
-- **Bluetooth:** pair the controller in Switch mode (see its manual), then connect it in System Settings › Bluetooth.
+- **Cyclone 2 with the 2.4 GHz dongle:** plug the dongle into your Mac and press **Home + X**.
+- **Bluetooth:** pair the controller in Switch mode (your manual has the button combo), then connect it from **System Settings → Bluetooth**.
 
-Xbox (XInput) mode doesn't work, because macOS can't see controllers in that mode.
+Xbox mode won't work. macOS simply can't see controllers in that mode.
 
-## What it does
+## How to use it
 
-1. **Measure:** it records where each stick rests (centre offset and noise), then how far and how evenly it travels while you rotate it (reach and roundness). It also suggests a deadzone.
-2. **Calibrate:** it shows your controller's own calibration steps. The calibration runs inside the controller, so you don't need the GameSir app.
-3. **Measure again:** it shows the before → after numbers side by side.
+1. **Measure.** Click **Measure sticks** and keep your hands off for a couple of seconds. Then rotate both sticks around their edges a few times and click **Done**. You'll see where each stick rests, how much it jitters, how round its movement is, and a suggested deadzone.
+2. **Calibrate.** Click **Calibrate…** and follow the steps. The calibration happens inside your controller and the app just guides you, so you don't need the GameSir app.
+3. **Compare.** The app measures again and shows your before → after numbers side by side.
 
-The app only reads the controller. It never writes to it, and it doesn't change how games see the controller.
+You can't break anything: the app only reads from your controller. It never changes its settings or how your games see it.
 
-## Supported controllers
+## Which controllers work?
 
-| Controller | Mode | Connection | Calibration steps |
+| Controller | Mode | Connection | Calibration guide |
 |---|---|---|---|
-| GameSir Cyclone 2 | Switch (shows up as "Pro Controller") | 2.4 GHz dongle (Home + X), Bluetooth. Both tested | Built in |
-| Other HID gamepads | Any mode macOS sees as a gamepad | USB, dongle, Bluetooth | Generic ("see your manual") |
+| GameSir Cyclone 2 | Switch (shows up as "Pro Controller") | 2.4 GHz dongle (Home + X) and Bluetooth, both tested | Step by step |
+| Other controllers | Any mode your Mac sees as a gamepad | USB, dongle or Bluetooth | General tips for now |
 
-In Switch mode the triggers are on/off buttons, so the app can't measure how far they travel.
+One thing to know: in Switch mode the triggers work like simple buttons (pressed or not), so the app can't measure how far they travel.
 
-## Build
+## Help add your controller
 
-Building requires Xcode 26 or later (CI uses Xcode 26.6). The app itself runs on macOS 14 or later.
+Every controller has its own button combo for calibration. If yours isn't listed, you can add it in a few lines: copy the steps from your controller's manual into [`GameSirCalibrator/Guides.swift`](GameSirCalibrator/Guides.swift) and open a pull request. There are a few [beginner-friendly issues](https://github.com/AdhamSamer3301/GameSirCalibrator/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) waiting if you'd like a starting point.
+
+Something not working? If a stick shows up on the wrong side, or not at all, please [open an issue](https://github.com/AdhamSamer3301/GameSirCalibrator/issues/new). Include the **Reading:** line shown under the controller name; it helps a lot.
+
+## Building from source
+
+You'll need Xcode 26 or later. Open `GameSirCalibrator.xcodeproj` and press Run, or build from Terminal:
 
 ```bash
 xcodebuild -project GameSirCalibrator.xcodeproj -scheme GameSirCalibrator build
 ```
 
-Or open `GameSirCalibrator.xcodeproj` and press Run. Tests: `xcodebuild … test`.
-
-Release build (universal, for Apple Silicon and Intel):
+Run the tests by swapping `build` for `test`. For a universal build that runs on both Apple Silicon and Intel:
 
 ```bash
 xcodebuild -project GameSirCalibrator.xcodeproj -scheme GameSirCalibrator -configuration Release -destination 'generic/platform=macOS' build
 ```
 
-## Add your controller
+## Under the hood
 
-Calibration steps live in [`GameSirCalibrator/Guides.swift`](GameSirCalibrator/Guides.swift). Add an entry with your model name and the steps from its manual, then open a pull request. If your controller's sticks show up on the wrong axes, please open an issue and include the "Reading:" line from under the controller name.
+For the curious: the app reads raw values straight from the controller through IOKit, because Apple's GameController framework smooths stick values before apps see them. Most controllers describe their own layout, so the app reads them directly. Switch-style controllers send their sticks as packed 12-bit values that their description leaves out, so the app decodes those bytes itself (`Gamepad.switchProSticks`). Steam Input adds a virtual copy of your controller, which the app ignores so each controller shows up once.
 
-## How it works
-
-The app reads raw HID values through IOKit rather than Apple's GameController framework, which filters stick values. Most pads are read from their HID descriptor. Switch Pro-style pads in full report mode (`0x30`) pack the sticks as 12-bit values, so the app decodes those bytes directly (`Gamepad.switchProSticks`). Virtual pads, such as the one Steam Input creates, are ignored so each controller is listed once. The maths is in [`StickStats.swift`](GameSirCalibrator/StickStats.swift). Its thresholds are tuning constants at the top of the file.
+The maths lives in [`StickStats.swift`](GameSirCalibrator/StickStats.swift). The pass/fail thresholds are at the top of the file if you want to tweak them.
 
 ## License
 
-MIT
+MIT: free to use, change and share.
