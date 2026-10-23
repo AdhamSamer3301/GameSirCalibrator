@@ -8,7 +8,7 @@ Unofficial. Not affiliated with or endorsed by GameSir.
 
 ## Download
 
-Get `GameSirCalibrator-0.1.0.zip` from [Releases](https://github.com/AdhamSamer3301/GameSirCalibrator/releases), unzip it and move the app to Applications. It runs on macOS 14 or later, on Apple Silicon and Intel Macs.
+Get the latest `GameSirCalibrator-<version>.zip` from [Releases](https://github.com/AdhamSamer3301/GameSirCalibrator/releases/latest), unzip it and move the app to Applications. It runs on macOS 14 or later, on Apple Silicon and Intel Macs.
 
 The app isn't notarized by Apple, so the first time you open it macOS says it can't verify the developer. Open System Settings › Privacy & Security and click **Open Anyway**.
 
