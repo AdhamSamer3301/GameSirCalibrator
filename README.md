@@ -6,11 +6,33 @@ Unofficial. Not affiliated with or endorsed by GameSir.
 
 ![GameSir Calibrator showing a Cyclone 2's stick measurement](docs/screenshot.jpg)
 
-## Download
+## Install
 
-Get the latest `GameSirCalibrator-<version>.zip` from [Releases](https://github.com/AdhamSamer3301/GameSirCalibrator/releases/latest), unzip it and move the app to Applications. It runs on macOS 14 or later, on Apple Silicon and Intel Macs.
+Requires macOS 14 or later, on an Apple Silicon or Intel Mac.
 
-The app isn't notarized by Apple, so the first time you open it macOS says it can't verify the developer. Open System Settings › Privacy & Security and click **Open Anyway**.
+1. Download the latest `GameSirCalibrator-<version>.zip` from [Releases](https://github.com/AdhamSamer3301/GameSirCalibrator/releases/latest).
+2. Double-click the zip to unzip it, then drag **GameSirCalibrator** into your **Applications** folder.
+3. Open it. The first time, macOS says it "could not verify GameSirCalibrator is free of malware". Click **Done**, not Move to Trash.
+4. Open **System Settings › Privacy & Security**, scroll down to **Security**, and click **Open Anyway** next to the GameSirCalibrator message. Confirm with your password or Touch ID, then click **Open Anyway** once more.
+
+From then on it opens normally. Each new version you download asks once again.
+
+**Why the warning?** The app is free and open source, but it isn't notarized by Apple, which requires a paid Apple Developer account. To check your download, compare the zip's SHA-256 with the one in the release notes (`shasum -a 256 GameSirCalibrator-*.zip`), or [build it yourself](#build).
+
+**Prefer Terminal?** Instead of steps 3 and 4, clear the download flag. Only do this for apps you trust:
+
+```bash
+xattr -dr com.apple.quarantine /Applications/GameSirCalibrator.app
+```
+
+## Connect your controller
+
+Put the controller in **Switch mode**; macOS then lists it as "Pro Controller".
+
+- **GameSir Cyclone 2, 2.4 GHz dongle:** plug the dongle into your Mac, then press **Home + X**.
+- **Bluetooth:** pair the controller in Switch mode (see its manual), then connect it in System Settings › Bluetooth.
+
+Xbox (XInput) mode doesn't work, because macOS can't see controllers in that mode.
 
 ## What it does
 
@@ -26,8 +48,6 @@ The app only reads the controller. It never writes to it, and it doesn't change 
 |---|---|---|---|
 | GameSir Cyclone 2 | Switch (shows up as "Pro Controller") | 2.4 GHz dongle (Home + X), Bluetooth. Both tested | Built in |
 | Other HID gamepads | Any mode macOS sees as a gamepad | USB, dongle, Bluetooth | Generic ("see your manual") |
-
-**Xbox (XInput) mode doesn't work:** macOS can't see controllers in that mode. Switch your controller to Switch mode.
 
 In Switch mode the triggers are on/off buttons, so the app can't measure how far they travel.
 
